@@ -7,16 +7,16 @@ Env:  MONGO_URI, MONGO_DB
 import calendar
 import os
 from contextlib import asynccontextmanager
-from datetime import date as dt_date, datetime, time as dt_time, timedelta, timezone
+from datetime import date as dt_date, datetime, timedelta, timezone
 from decimal import Decimal, ROUND_HALF_UP
 from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Query, status
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field, StrictInt, field_validator
 from pymongo import MongoClient
 from pymongo.collection import ReturnDocument
-from pymongo.errors import DuplicateKeyError, PyMongoError
+from pymongo.errors import DuplicateKeyError
 
 load_dotenv()
 
@@ -207,7 +207,7 @@ def ensure_indexes():
 async def lifespan(app: FastAPI):
     try:
         ensure_indexes()
-    except Exception as e:
+    except Exception:
         # Avoid crashing if mongo is not yet up; health endpoint checks connectivity
         pass
     yield
